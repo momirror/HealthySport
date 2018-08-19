@@ -27,17 +27,24 @@ public class MainActivity extends BaseActivity implements RadioGroup.OnCheckedCh
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        setContentView(R.layout.activity_main);
-
-        initView();
-        setViewsListener();
-
     }
 
     @Override
     protected void initViews() {
+        tabbar = findViewById(R.id.tab_group);
+        btn_sport = findViewById(R.id.btn_sport);
+        btn_discov = findViewById(R.id.btn_discov);
+        btn_heart = findViewById(R.id.btn_heart);
+        btn_mine = findViewById(R.id.btn_mine);
 
+        sportFragment = new SportFragment();
+        discovFragment = new DiscovFragment();
+        heartFragment = new HeartFragment();
+        mineFragment = new MineFragment();
+
+
+        //初始化fragment界面
+        getSupportFragmentManager().beginTransaction().add(R.id.flag_content,sportFragment, Constant.SPOT_TAG).commit();
     }
 
     @Override
@@ -47,7 +54,7 @@ public class MainActivity extends BaseActivity implements RadioGroup.OnCheckedCh
 
     @Override
     protected void getLayoutToView() {
-
+        setContentView(R.layout.activity_main);
     }
 
     @Override
@@ -64,26 +71,6 @@ public class MainActivity extends BaseActivity implements RadioGroup.OnCheckedCh
 
     @Override
     protected void setViewsFunction() {
-
-    }
-
-    private void initView() {
-
-        tabbar = findViewById(R.id.tab_group);
-        btn_sport = findViewById(R.id.btn_sport);
-        btn_discov = findViewById(R.id.btn_discov);
-        btn_heart = findViewById(R.id.btn_heart);
-        btn_mine = findViewById(R.id.btn_mine);
-
-        sportFragment = new SportFragment();
-        discovFragment = new DiscovFragment();
-        heartFragment = new HeartFragment();
-        mineFragment = new MineFragment();
-
-
-        //初始化fragment界面
-        getSupportFragmentManager().beginTransaction().add(R.id.flag_content,sportFragment, Constant.SPOT_TAG).commit();
-
 
     }
 

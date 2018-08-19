@@ -127,7 +127,7 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/play_back"
+                android:id="@+id/desc_back"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:drawableLeft="@mipmap/mrkj_turn_left"
@@ -140,6 +140,8 @@
                 android:id="@+id/play_detail"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:padding="5dp"
                 android:textColor="@color/black"
                 android:textSize="16sp"/>
 

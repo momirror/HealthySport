@@ -24,7 +24,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         initValues();
         setActivityTitle();
         initViews();
-//TODO:        setViewsListener();
+        setViewsListener();
         setViewsFunction();
     }
 
