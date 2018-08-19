@@ -2,6 +2,8 @@ package com.example.msp.healthysport;
 
 import android.support.v4.app.FragmentTransaction;
 import android.os.Bundle;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
@@ -25,6 +27,7 @@ public class MainActivity extends BaseActivity implements RadioGroup.OnCheckedCh
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_main);
 
         initView();
@@ -33,9 +36,34 @@ public class MainActivity extends BaseActivity implements RadioGroup.OnCheckedCh
     }
 
     @Override
+    protected void initViews() {
+
+    }
+
+    @Override
+    protected void setActivityTitle() {
+
+    }
+
+    @Override
+    protected void getLayoutToView() {
+
+    }
+
+    @Override
+    protected void initValues() {
+
+    }
+
+    @Override
     public void  setViewsListener() {
 
         tabbar.setOnCheckedChangeListener(this);
+
+    }
+
+    @Override
+    protected void setViewsFunction() {
 
     }
 
