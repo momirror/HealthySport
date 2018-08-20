@@ -17,6 +17,7 @@ import java.io.InputStreamReader;
 
 public class PrepareActivity extends BaseActivity implements View.OnClickListener {
 
+    private ImageView sportImage;
     private Button finishBtn;
     private ImageView playBtn;
     private ImageView nextBtn;
@@ -27,6 +28,8 @@ public class PrepareActivity extends BaseActivity implements View.OnClickListene
     private Boolean isShowDesc;
     private int sportIndex;
     private int what;
+    private int[] frameRes = new int[]{R.drawable.sport_animation_0,R.drawable.sport_animation_1,R.drawable.sport_animation_2,
+            R.drawable.sport_animation_3,R.drawable.sport_animation_4};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +42,7 @@ public class PrepareActivity extends BaseActivity implements View.OnClickListene
     @Override
     protected void initViews() {
 
+        sportImage = findViewById(R.id.sport_image);
         finishBtn = findViewById(R.id.finish);
         playBtn = findViewById(R.id.play_on_off);
         nextBtn = findViewById(R.id.play_next);
@@ -47,6 +51,7 @@ public class PrepareActivity extends BaseActivity implements View.OnClickListene
         sportDesc = findViewById(R.id.play_detail);
         downOne = findViewById(R.id.down_one);
         downTwo = findViewById(R.id.down_two);
+
 
     }
 
@@ -120,6 +125,8 @@ public class PrepareActivity extends BaseActivity implements View.OnClickListene
 
     @Override
     protected void setViewsFunction() {
+
+        sportImage.setImageResource(frameRes[sportIndex]);
 
     }
 
