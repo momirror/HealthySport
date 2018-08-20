@@ -1,5 +1,6 @@
 package com.example.msp.healthysport;
 
+import android.graphics.drawable.AnimationDrawable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -8,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.example.msp.healthysport.application.SportApplication;
 import com.example.msp.healthysport.base.BaseActivity;
 
 import java.io.BufferedReader;
@@ -21,13 +23,15 @@ public class PrepareActivity extends BaseActivity implements View.OnClickListene
     private Button finishBtn;
     private ImageView playBtn;
     private ImageView nextBtn;
-    private TextView more;
+    private TextView more,sportName;
     private TextView backFromDesc,sportDesc;
     private LinearLayout downOne;
     private LinearLayout downTwo;
     private Boolean isShowDesc;
-    private int sportIndex;
+    private int sportIndex = 0;
     private int what;
+    private AnimationDrawable animationDrawable;
+    private Boolean isPlaying = false;
     private int[] frameRes = new int[]{R.drawable.sport_animation_0,R.drawable.sport_animation_1,R.drawable.sport_animation_2,
             R.drawable.sport_animation_3,R.drawable.sport_animation_4};
 
@@ -51,6 +55,7 @@ public class PrepareActivity extends BaseActivity implements View.OnClickListene
         sportDesc = findViewById(R.id.play_detail);
         downOne = findViewById(R.id.down_one);
         downTwo = findViewById(R.id.down_two);
+        sportName = findViewById(R.id.sport_name);
 
 
     }
@@ -127,6 +132,7 @@ public class PrepareActivity extends BaseActivity implements View.OnClickListene
     protected void setViewsFunction() {
 
         sportImage.setImageResource(frameRes[sportIndex]);
+        sportName.setText(SportApplication.sportNames[sportIndex]);
 
     }
 
@@ -141,7 +147,52 @@ public class PrepareActivity extends BaseActivity implements View.OnClickListene
             case R.id.sport_desc:
                 showDown();
                 break;
+            case R.id.play_on_off:
+                playSportAnimations();
+                break;
+            case R.id.play_next:
+                playNext();
+                break;
         }
+    }
+
+    private void playSportAnimations() {
+
+        animationDrawable = (AnimationDrawable) sportImage.getDrawable();
+
+        if(!isPlaying) {
+            animationDrawable.start();
+            playBtn.setImageResource(R.mipmap.mrkj_play_stop);
+        } else {
+            animationDrawable.stop();
+            playBtn.setImageResource(R.mipmap.mrkj_play_start);
+        }
+
+        isPlaying = !isPlaying;
+
+
+
+    }
+
+    private void playNext() {
+
+        sportIndex++;
+        isPlaying = false;
+        playBtn.setImageResource(R.mipmap.mrkj_play_start);
+
+        if(animationDrawable != null && animationDrawable.isRunning()){
+            animationDrawable.stop();
+        }
+
+
+
+        if(sportIndex > 4) {
+            sportIndex = 0;
+        }
+
+        sportImage.setImageResource(frameRes[sportIndex]);
+        sportName.setText(SportApplication.sportNames[sportIndex]);
+
     }
 
     private void showDown() {
