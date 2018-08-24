@@ -1,5 +1,12 @@
 package com.example.msp.healthysport.utils;
 
+import android.text.TextUtils;
+
+import com.example.msp.healthysport.entity.TodayInfo;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -18,7 +25,7 @@ public class HttpUtils {
 
     /*get*/
     public static String getData(String strUrl) {
-        strUrl = "http://op.juhe.cn/onebox/weather/query?cityname=%E5%8C%97%E4%BA%AC&key=06ba330de85cf5484fedbcd1c2247e28";
+
         HttpURLConnection connection = null;
         BufferedReader reader = null;
         String rs = null;
@@ -67,6 +74,66 @@ public class HttpUtils {
 
         return null;
     }
+
+    public static TodayInfo parseTodayInfo(String str) {
+
+        try {
+            JSONObject jsonObject = new JSONObject(str);
+            String reason = jsonObject.getString("reason");
+            if(TextUtils.equals("查询成功!",reason)) {
+                JSONObject result = jsonObject.getJSONObject("result");
+                JSONObject data = result.getJSONObject("data");
+                JSONObject realtime = data.getJSONObject("realtime");
+                JSONObject wind = realtime.getJSONObject("wind");
+                JSONObject pm25 = data.getJSONObject("pm25");
+
+                //风
+                String windSpeed = wind.getString("windspeed");
+                String direct = wind.getString("direct");
+                String power = wind.getString("power");
+
+                //天气
+                JSONObject weather = realtime.getJSONObject("weather");
+                String humidity = weather.getString("humidity");
+                String info = weather.getString("info");
+                String temperature = weather.getString("temperature");
+
+                //日期，城市，农历
+                String date = realtime.getString("date");
+                String city = realtime.getString("city_name");
+                String week = realtime.getString("week");
+                String moon = realtime.getString("moon");
+
+                //空气
+                JSONObject subpm25 = pm25.getJSONObject("pm25");
+                String quality = subpm25.getString("quality");
+
+                TodayInfo todayInfo = new TodayInfo();
+                todayInfo.setWindSpeed(windSpeed);
+                todayInfo.setCity(city);
+                todayInfo.setDate(date);
+                todayInfo.setWindDirect(direct);
+                todayInfo.setHumidity(humidity);
+                todayInfo.setInfo(info);
+                todayInfo.setMoon(moon);
+                todayInfo.setWindPower(power);
+                todayInfo.setTemperature(temperature);
+                todayInfo.setWeek(week);
+                todayInfo.setQuality(quality);
+
+                return todayInfo;
+            }
+
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
+
+
 
 
 

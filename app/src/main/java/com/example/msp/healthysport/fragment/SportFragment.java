@@ -7,10 +7,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.TextView;
 
 import com.example.msp.healthysport.PrepareActivity;
 import com.example.msp.healthysport.R;
 import com.example.msp.healthysport.base.BaseFragment;
+import com.example.msp.healthysport.entity.TodayInfo;
 import com.example.msp.healthysport.utils.Constant;
 import com.example.msp.healthysport.utils.HttpUtils;
 
@@ -19,6 +21,8 @@ public class SportFragment extends BaseFragment {
 
     private View view;
     private ImageButton warm_up_btn;
+    private TextView cityText,temperatureText,qualityText;
+
 
 
     @Override
@@ -32,9 +36,12 @@ public class SportFragment extends BaseFragment {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(getContext(), PrepareActivity.class));
-//                getActivity().overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
             }
         });
+
+        cityText = view.findViewById(R.id.text_city);
+        temperatureText = view.findViewById(R.id.text_temperature);
+        qualityText = view.findViewById(R.id.text_air);
 
         getWetherData();
 
@@ -47,7 +54,11 @@ public class SportFragment extends BaseFragment {
             @Override
             public void run() {
                 String weatherStr = HttpUtils.getData(String.format(Constant.WEATHER_URL,"深圳","utf-8"));
+                TodayInfo todayInfo =  HttpUtils.parseTodayInfo(weatherStr);
                 Log.d("SportFragment",weatherStr);
+
+                //TODO: Update UI
+
             }
         }).start();
 
