@@ -17,7 +17,7 @@
             android:textColor="@color/black"
             android:layout_marginLeft="10dp"
             android:textSize="16sp"
-            android:text="城市:深圳"/>
+            android:text="城市:"/>
 
         <TextView
             android:id="@+id/text_temperature"
@@ -27,7 +27,7 @@
             android:layout_weight="1"
             android:textSize="16sp"
             android:textColor="@color/black"
-            android:text="温度:24C" />
+            android:text="温度:" />
 
         <TextView
             android:id="@+id/text_air"
@@ -36,7 +36,7 @@
             android:textSize="16sp"
             android:layout_marginRight="10dp"
             android:textColor="@color/black"
-            android:text="空气质量:优"/>
+            android:text="空气质量:"/>
 
     </LinearLayout>
 
@@ -67,6 +67,7 @@
         android:paddingLeft="30dp"
         android:paddingRight="30dp">
         <TextView
+            android:id="@+id/mileage_text"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:drawableLeft="@mipmap/mrkj_mileage"
@@ -76,6 +77,7 @@
             />
 
         <TextView
+            android:id="@+id/heat_text"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:drawableLeft="@mipmap/mrkj_heat"
