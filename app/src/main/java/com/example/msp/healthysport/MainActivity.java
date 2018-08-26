@@ -53,7 +53,7 @@ public class MainActivity extends BaseActivity implements RadioGroup.OnCheckedCh
     }
 
     @Override
-    protected void getLayoutToView() {
+    protected void setViewLayoutResouce() {
         setContentView(R.layout.activity_main);
     }
 

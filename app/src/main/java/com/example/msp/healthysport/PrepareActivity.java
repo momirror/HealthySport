@@ -117,13 +117,11 @@ public class PrepareActivity extends BaseActivity implements View.OnClickListene
     protected void setActivityTitle() {
         initTitle();
         setTitle("运动");
-        settitleBarBackGround(R.color.watm_background_gray);
-        setTitleTextColor(R.color.theme_blue_two);
-        setTitleLeftImage(R.mipmap.mrkj_back_blue,this);
+
     }
 
     @Override
-    protected void getLayoutToView() {
+    protected void setViewLayoutResouce() {
         setContentView(R.layout.activity_prepare);
     }
 

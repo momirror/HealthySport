@@ -20,7 +20,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     protected void onCreate(Bundle saveInstanceState) {
         super.onCreate(saveInstanceState);
 
-        getLayoutToView();
+        setViewLayoutResouce();
         initValues();
         setActivityTitle();
         initViews();
@@ -29,6 +29,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     }
 
 
+    //初始化title bar相关控件
     public void initTitle() {
 
         titleView = findViewById(R.id.mytitle);
@@ -39,22 +40,39 @@ public abstract class BaseActivity extends AppCompatActivity {
         titleBar = findViewById(R.id.title_bar);
     }
 
+    //设置标签栏背景颜色
     public void settitleBarBackGround(int color) {
         titleBar.setBackgroundResource(color);
     }
+
+    //在这个方法中取出layout中的控件
     protected abstract void initViews();
+
+    //设置title
     protected abstract void setActivityTitle();
 
 
-    protected abstract void getLayoutToView();
+    //给view设置layout文件
+    protected abstract void setViewLayoutResouce();
 
+    //初始化actitivity中使用到的数据
     protected abstract void initValues();
 
+    //设置title
     public void setTitle(String name) {
+
+        if(titleView == null) {
+            initTitle();
+        }
+
         titleView.setText(name);
         leftImg.setVisibility(View.INVISIBLE);
+        settitleBarBackGround(R.color.watm_background_gray);
+        setTitleTextColor(R.color.theme_blue_two);
+        setTitleLeftImage(R.mipmap.mrkj_back_blue,this);
     }
 
+    //设置title,并传入相入的activity引用
     public void setTitle(String name, final Activity activity) {
         titleView.setText(name);
         leftImg.setVisibility(View.VISIBLE);
@@ -66,12 +84,13 @@ public abstract class BaseActivity extends AppCompatActivity {
         });
     }
 
+    //设置title和返回键
     public void setTitleAndShowBack(String name) {
         titleView.setText(name);
         leftImg.setVisibility(View.VISIBLE);
     }
 
-
+   //设置title bar上的所有控件
     public void setAllTitleItems(String name, int picID) {
         titleView.setText(name);
         leftImg.setVisibility(View.VISIBLE);
@@ -81,10 +100,12 @@ public abstract class BaseActivity extends AppCompatActivity {
         }
     }
 
+    //设置title颜色
     public void setTitleTextColor(int colorID) {
         titleView.setTextColor(colorID);
     }
 
+    //设置title bar左边的控件的图片（通常是返回）
     public void setTitleLeftImage(int picID,final Activity activity) {
         leftImg.setImageResource(picID);
         leftImg.setVisibility(View.VISIBLE);
@@ -99,11 +120,14 @@ public abstract class BaseActivity extends AppCompatActivity {
     }
 
 
+    //设置title bar右边的图片
     public void setTitleRightImage(int picID) {
         rightImg.setImageResource(picID);
     }
 
+    //设置该activity中用到的listener
     protected abstract void setViewsListener();
+
 
     protected abstract void setViewsFunction();
 }
