@@ -51,6 +51,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:hint="Tom"
+            android:maxLines="1"
             android:background="@null"
             android:gravity="right"
             android:paddingRight="20dp"
@@ -142,6 +143,7 @@
             android:layout_height="wrap_content"
             android:hint="171"
             android:background="@null"
+            android:inputType="number"
             android:gravity="right"
             android:layout_weight="1"/>
         <TextView
@@ -174,6 +176,7 @@
             android:hint="70"
             android:background="@null"
             android:gravity="right"
+            android:inputType="number"
             android:layout_weight="1"/>
 
         <TextView
@@ -206,6 +209,7 @@
             android:hint="50"
             android:background="@null"
             android:gravity="right"
+            android:inputType="number"
             android:layout_weight="1"/>
         <TextView
             android:layout_width="wrap_content"
