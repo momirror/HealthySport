@@ -45,10 +45,10 @@ public class SportFragment extends BaseFragment {
         public boolean handleMessage(Message message) {
             switch (message.what) {
                 case 1:
-                    TodayInfo todayInfo = (TodayInfo) message.obj;
-                    cityText.setText("城市: "+todayInfo.getCity());
-                    temperatureText.setText("温度: "+todayInfo.getTemperature());
-                    qualityText.setText("空气质量: "+todayInfo.getQuality());
+//                    TodayInfo todayInfo = (TodayInfo) message.obj;
+//                    cityText.setText("城市: "+todayInfo.getCity());
+//                    temperatureText.setText("温度: "+todayInfo.getTemperature());
+//                    qualityText.setText("空气质量: "+todayInfo.getQuality());
                     break;
                 case 2:
                     currentSteps += 5;
