@@ -16,7 +16,7 @@ public class Storage {
     //初始化
     public static void createSharePrefences(Context context) {
         String name = context.getPackageName();
-        sharedPreferences = context.getSharedPreferences(name,Context.MODE_WORLD_READABLE);
+        sharedPreferences = context.getSharedPreferences(name,Context.MODE_PRIVATE);
         editor = sharedPreferences.edit();
     }
 
@@ -58,7 +58,8 @@ public class Storage {
         }
 
         editor.putInt(key,value);
-        return editor.commit();
+        Boolean result = editor.commit();
+        return result;
     }
 
 

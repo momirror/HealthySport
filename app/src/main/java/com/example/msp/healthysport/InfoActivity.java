@@ -61,6 +61,9 @@ public class InfoActivity extends BaseActivity implements View.OnClickListener {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        String dateStr = birthdayYear + "-" + ( birthdayMonth + 1) + "-" + birthdayDay;
+        changeBirthday.setText(dateStr);
+
     }
 
     @Override
@@ -133,6 +136,11 @@ public class InfoActivity extends BaseActivity implements View.OnClickListener {
                     public void onDateSet(DatePicker datePicker, int year, int month, int day) {
                         String dateStr = year + "-" + ( month + 1) + "-" + day;
                         changeBirthday.setText(dateStr);
+
+                        Storage.saveIntValues("birthdayYear",year);
+                        Storage.saveIntValues("birthdayMonth",month);
+                        Storage.saveIntValues("birthdayDay",day);
+
                     }
                 },birthdayYear,birthdayMonth,birthdayDay);
                 datePickerDialog.setTitle("设置生日日期");

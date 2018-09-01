@@ -4,6 +4,7 @@ import android.app.Application;
 import android.widget.Toast;
 
 import com.example.msp.healthysport.utils.CrashHandler;
+import com.example.msp.healthysport.utils.Storage;
 
 public class SportApplication extends Application {
     public static String[] sportNames = new String[5];
@@ -19,6 +20,8 @@ public class SportApplication extends Application {
         sportNames[4] = "仰卧平板杠铃肱三弯举";
 
 //        CrashHandler.getInstance().init(this);
+
+        Storage.createSharePrefences(this);
 
     }
 }
