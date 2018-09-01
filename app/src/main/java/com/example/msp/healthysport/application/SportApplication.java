@@ -3,6 +3,8 @@ package com.example.msp.healthysport.application;
 import android.app.Application;
 import android.widget.Toast;
 
+import com.example.msp.healthysport.utils.CrashHandler;
+
 public class SportApplication extends Application {
     public static String[] sportNames = new String[5];
 
@@ -15,6 +17,8 @@ public class SportApplication extends Application {
         sportNames[2] = "滚轮支点俯卧撑";
         sportNames[3] = "平板卧推";
         sportNames[4] = "仰卧平板杠铃肱三弯举";
+
+//        CrashHandler.getInstance().init(this);
 
     }
 }

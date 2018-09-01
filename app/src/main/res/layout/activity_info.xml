@@ -114,6 +114,7 @@
             android:text="修改生日"/>
 
         <TextView
+            android:id="@+id/btn_change_birthday"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"

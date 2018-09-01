@@ -1,6 +1,7 @@
 package com.example.msp.healthysport;
 
 import android.app.Activity;
+import android.app.DatePickerDialog;
 import android.content.ContentUris;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -13,18 +14,27 @@ import android.os.Environment;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.support.annotation.RequiresApi;
+import android.support.v4.content.FileProvider;
 import android.support.v7.app.AlertDialog;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.example.msp.healthysport.base.BaseActivity;
 import com.example.msp.healthysport.utils.GetPictureFromLocation;
+import com.example.msp.healthysport.utils.Storage;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+import static android.os.Environment.getExternalStoragePublicDirectory;
 
 /**
  *
@@ -33,6 +43,7 @@ public class InfoActivity extends BaseActivity implements View.OnClickListener {
 
     private Button btnEdit;
     private File tempFIle;
+    private Uri imageUri;
 
     private static final int PHOTO_REQUEST_CAMERA = 1; //拍照
     private static final int PHOTO_REQUEST_GALLERY = 2;//相册选取
@@ -40,6 +51,10 @@ public class InfoActivity extends BaseActivity implements View.OnClickListener {
     private static final int PHOTO_REQUEST_CUT = 4;//结果
     private static final  String PHOTO_FILE_NAME = "tmep_photo.jpg";
     private static ImageView avatar;
+    private static TextView changeBirthday;
+    private int birthdayYear,birthdayMonth,birthdayDay;
+
+    private String mImagePath = Environment.getExternalStorageDirectory()+"/meta/";
 
 
     @Override
@@ -53,6 +68,7 @@ public class InfoActivity extends BaseActivity implements View.OnClickListener {
 
         btnEdit = findViewById(R.id.btn_edit);
         avatar = findViewById(R.id.avatar);
+        changeBirthday = findViewById(R.id.btn_change_birthday);
 
     }
 
@@ -68,18 +84,22 @@ public class InfoActivity extends BaseActivity implements View.OnClickListener {
 
     @Override
     protected void initValues() {
-
+        birthdayYear = Storage.getIntValue("birthdayYear",1988);
+        birthdayMonth = Storage.getIntValue("birthdayMonth",12);
+        birthdayDay = Storage.getIntValue("birthdayDay",22);
     }
 
     @Override
     protected void setViewsListener() {
         btnEdit.setOnClickListener(this);
+        changeBirthday.setOnClickListener(this);
     }
 
     @Override
     protected void setViewsFunction() {
 
     }
+
 
     @Override
     public void onClick(View view) {
@@ -99,11 +119,24 @@ public class InfoActivity extends BaseActivity implements View.OnClickListener {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         tempFIle = new File(Environment.getExternalStorageDirectory(),PHOTO_FILE_NAME);
-//                        takePhotoFromCamera();
+                        takePhotoFromCamera();
                     }
                 });
                 builder.create();
                 builder.show();
+                break;
+            case R.id.btn_change_birthday:
+
+
+                DatePickerDialog datePickerDialog = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePicker datePicker, int year, int month, int day) {
+                        String dateStr = year + "-" + ( month + 1) + "-" + day;
+                        changeBirthday.setText(dateStr);
+                    }
+                },birthdayYear,birthdayMonth,birthdayDay);
+                datePickerDialog.setTitle("设置生日日期");
+                datePickerDialog.show();
                 break;
         }
     }
@@ -125,7 +158,94 @@ public class InfoActivity extends BaseActivity implements View.OnClickListener {
     }
 
 
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    protected void takePhotoFromCamera() {
+//        Intent intent = new Intent("android.media.action.IMAGE_CAPTURE");
+//        if(hasSDCard()) {
+//            intent.putExtra(MediaStore.EXTRA_OUTPUT,Uri.fromFile(new File(Environment.getExternalStorageDirectory(),PHOTO_FILE_NAME)));
+//        }
+//
+//        startActivityForResult(intent,PHOTO_REQUEST_CAMERA);
+
+        String tag = "takephoto";
+
+
+        Intent intent = new Intent("android.media.action.IMAGE_CAPTURE");
+
+
+        //判断是否是7.0的系统
+        if (Build.VERSION.SDK_INT < 24) {
+            //拍照的照片路径
+            imageUri = Uri.fromFile(tempFIle);//7.0这里会闪退，imgfile是图片文件路径
+            Log.i(tag, "7.0之前的系统，拍照的照片：imageUri路径：" + imageUri);
+            intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
+
+            startActivityForResult(intent, PHOTO_REQUEST_CAMERA);
+        } else {
+
+            takePicture();
+        }
+        // 启动相机程序的Activity,Cut_PHOTO 是我项目需要进行裁剪功能，拍完后进行裁剪，这个可以根据自己需求去自己设置
+
+    }
+
+    String mCurrentPhotoPath;
+
+    private File createImageFile() throws IOException {
+        // Create an image file name
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        String imageFileName = "JPEG_" + timeStamp + "_";
+        File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        File image = File.createTempFile(
+                imageFileName,  /* prefix */
+                ".jpg",         /* suffix */
+                storageDir      /* directory */
+        );
+
+        // Save a file: path for use with ACTION_VIEW intents
+        mCurrentPhotoPath = image.getAbsolutePath();
+        return image;
+    }
+
+    private void takePicture(){
+
+
+        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        // Ensure that there's a camera activity to handle the intent
+        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+            // Create the File where the photo should go
+
+            try {
+                tempFIle = createImageFile();
+            } catch (IOException ex) {
+                // Error occurred while creating the File
+                ex.printStackTrace();
+            }
+            // Continue only if the File was successfully created
+            if (tempFIle != null) {
+                Uri photoURI = FileProvider.getUriForFile(this,
+                        "com.example.msp.healthysport.fileprovider",
+                        tempFIle);
+                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
+                startActivityForResult(takePictureIntent, PHOTO_REQUEST_CAMERA);
+            }
+        }
+
+    }
+
+
+
+
+        private boolean hasSDCard() {
+        if(Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+
+
+
     @Override
     protected void onActivityResult(int requestCode,int resultCode,Intent data) {
         super.onActivityResult(requestCode,resultCode,data);
@@ -149,7 +269,13 @@ public class InfoActivity extends BaseActivity implements View.OnClickListener {
 
 
                 }
+            } else if(requestCode == PHOTO_REQUEST_CAMERA) {
+//                crop(Uri.fromFile(tempFIle));
+
+                Bitmap bitmap = BitmapFactory.decodeFile(tempFIle.getPath());
+                avatar.setImageBitmap(bitmap);
             }
+
         }
     }
 
