@@ -167,12 +167,6 @@ public class InfoActivity extends BaseActivity implements View.OnClickListener {
 
 
     protected void takePhotoFromCamera() {
-//        Intent intent = new Intent("android.media.action.IMAGE_CAPTURE");
-//        if(hasSDCard()) {
-//            intent.putExtra(MediaStore.EXTRA_OUTPUT,Uri.fromFile(new File(Environment.getExternalStorageDirectory(),PHOTO_FILE_NAME)));
-//        }
-//
-//        startActivityForResult(intent,PHOTO_REQUEST_CAMERA);
 
         String tag = "takephoto";
 
@@ -192,8 +186,6 @@ public class InfoActivity extends BaseActivity implements View.OnClickListener {
 
             takePicture();
         }
-        // 启动相机程序的Activity,Cut_PHOTO 是我项目需要进行裁剪功能，拍完后进行裁剪，这个可以根据自己需求去自己设置
-
     }
 
     String mCurrentPhotoPath;
@@ -243,7 +235,8 @@ public class InfoActivity extends BaseActivity implements View.OnClickListener {
 
 
 
-        private boolean hasSDCard() {
+    private boolean hasSDCard() {
+
         if(Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
             return true;
         } else {

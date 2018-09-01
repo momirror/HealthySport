@@ -82,7 +82,11 @@ public class SportFragment extends BaseFragment {
         warm_up_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(getContext(), PrepareActivity.class));
+
+
+//                startActivity(new Intent(getContext(), PrepareActivity.class));
+                throw new RuntimeException("这是自己定义的异常");
+
             }
         });
 

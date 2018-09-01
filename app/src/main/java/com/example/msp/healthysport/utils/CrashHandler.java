@@ -21,7 +21,7 @@ import java.util.Locale;
 public class CrashHandler implements Thread.UncaughtExceptionHandler {
 
     //手机存储路径
-    private final String logPath = Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + "Crash";
+    private  String logPath;// =   Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + "Crash";
 
     private static final String TAG = CrashHandler.class.getSimpleName();
 
@@ -46,6 +46,9 @@ public class CrashHandler implements Thread.UncaughtExceptionHandler {
 
     /** 初始化 */
     public void init(Context context){
+
+        logPath = context.getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS).getAbsolutePath() + File.separator + "Crash";
+
         mDefaultCrashHandler = Thread.getDefaultUncaughtExceptionHandler();
         Log.d("CrashHandler",logPath);
 
@@ -54,6 +57,8 @@ public class CrashHandler implements Thread.UncaughtExceptionHandler {
 
         mContext = context.getApplicationContext();
         mProcessName = context.getPackageName();
+
+
     }
 
     /** 用于格式化日期,作为日志文件名的一部分. */
@@ -88,7 +93,8 @@ public class CrashHandler implements Thread.UncaughtExceptionHandler {
         if (logDir.exists()){
             clearExLogWhenMax(logDir);
         }else{
-            logDir.mkdirs();
+            Boolean result = logDir.mkdirs();
+            Log.d("crash",result.toString());
         }
 
         //错误信息文件名

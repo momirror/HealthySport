@@ -19,7 +19,7 @@ public class SportApplication extends Application {
         sportNames[3] = "平板卧推";
         sportNames[4] = "仰卧平板杠铃肱三弯举";
 
-//        CrashHandler.getInstance().init(this);
+        CrashHandler.getInstance().init(this);
 
         Storage.createSharePrefences(this);
 
