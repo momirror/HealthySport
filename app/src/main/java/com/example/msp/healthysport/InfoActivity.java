@@ -55,7 +55,7 @@ public class InfoActivity extends BaseActivity implements View.OnClickListener {
     private int birthdayYear,birthdayMonth,birthdayDay;
 
     private String mImagePath = Environment.getExternalStorageDirectory()+"/meta/";
-
+    private String avatarPath;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,6 +63,7 @@ public class InfoActivity extends BaseActivity implements View.OnClickListener {
 
         String dateStr = birthdayYear + "-" + ( birthdayMonth + 1) + "-" + birthdayDay;
         changeBirthday.setText(dateStr);
+
 
     }
 
@@ -72,6 +73,12 @@ public class InfoActivity extends BaseActivity implements View.OnClickListener {
         btnEdit = findViewById(R.id.btn_edit);
         avatar = findViewById(R.id.avatar);
         changeBirthday = findViewById(R.id.btn_change_birthday);
+
+        if(avatarPath != null) {
+            Bitmap bitmap = BitmapFactory.decodeFile(avatarPath);
+            avatar.setImageBitmap(bitmap);
+        }
+
 
     }
 
@@ -90,6 +97,10 @@ public class InfoActivity extends BaseActivity implements View.OnClickListener {
         birthdayYear = Storage.getIntValue("birthdayYear",1988);
         birthdayMonth = Storage.getIntValue("birthdayMonth",12);
         birthdayDay = Storage.getIntValue("birthdayDay",22);
+        avatarPath = Storage.getStringValues("avatarPath",null);
+
+
+
     }
 
     @Override
@@ -114,14 +125,22 @@ public class InfoActivity extends BaseActivity implements View.OnClickListener {
                 builder.setPositiveButton("图库", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        tempFIle = new File(Environment.getExternalStorageDirectory(),PHOTO_FILE_NAME);
+                        try {
+                            tempFIle = createImageFile();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
                         getPhotoFromGallery();
                     }
                 });
                 builder.setNegativeButton("拍照", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        tempFIle = new File(Environment.getExternalStorageDirectory(),PHOTO_FILE_NAME);
+                        try {
+                            tempFIle = createImageFile();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
                         takePhotoFromCamera();
                     }
                 });
@@ -254,15 +273,8 @@ public class InfoActivity extends BaseActivity implements View.OnClickListener {
             if (requestCode == PHOTO_REQUEST_GALLERY) {
                 if (data != null) {
 
-                    try {
-                        Bitmap bitmap = BitmapFactory.decodeStream(getContentResolver().openInputStream(data.getData()));
-                        avatar.setImageBitmap(bitmap);
-                    } catch (FileNotFoundException e) {
-                        e.printStackTrace();
-                    }
-
-
-                    //TODO:crop image
+                    Uri uri = data.getData();
+                    crop(uri);
 
                 }
             } else if (requestCode == PHOTO_REQUEST_GALLERY2) {
@@ -275,6 +287,18 @@ public class InfoActivity extends BaseActivity implements View.OnClickListener {
 
                 Bitmap bitmap = BitmapFactory.decodeFile(tempFIle.getPath());
                 avatar.setImageBitmap(bitmap);
+            } else if (requestCode == PHOTO_REQUEST_CUT) {
+                try {
+                    Bitmap bitmap = BitmapFactory.decodeFile(tempFIle.getPath());
+                    Log.e("uri", Uri.fromFile(tempFIle).toString());
+                    avatar.setImageBitmap(bitmap);
+
+                    Storage.saveStringValues("avatarPath",tempFIle.getPath());
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
             }
 
         }
@@ -287,21 +311,26 @@ public class InfoActivity extends BaseActivity implements View.OnClickListener {
 
     private void crop(Uri uri) {
         Log.d("URI",uri.getPath());
-
+        
         //裁剪图片
         Intent intent = new Intent("com.android.camera.action.CROP");
         intent.setDataAndType(uri,"image/*");
         intent.putExtra("crop",true);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION); //添加这一句表示对目标应用临时授权该Uri所代表的文件,不添加会失败
+        }
 
         //裁剪比例
         intent.putExtra("aspectX",1);
         intent.putExtra("aspectY",1);
 
         //输出的尺寸大小
-        intent.putExtra("outputX",150);
-        intent.putExtra("outputY",150);
+        intent.putExtra("outputX",222);
+        intent.putExtra("outputY",222);
         intent.putExtra("scale",true);
         intent.putExtra(MediaStore.EXTRA_OUTPUT,Uri.fromFile(tempFIle));
+
 
         //格式
         intent.putExtra("outputFormat", Bitmap.CompressFormat.JPEG.toString());

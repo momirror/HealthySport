@@ -19,8 +19,10 @@ public class SportApplication extends Application {
         sportNames[3] = "平板卧推";
         sportNames[4] = "仰卧平板杠铃肱三弯举";
 
+        //设置异常捕获，将异常日志保存到手机中
         CrashHandler.getInstance().init(this);
 
+        //Preference工具类初始化
         Storage.createSharePrefences(this);
 
     }
