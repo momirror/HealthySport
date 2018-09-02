@@ -11,5 +11,8 @@
     <style name="MyBottomBarCheck" parent="Widget.AppCompat.CompoundButton.RadioButton">
         <item name="android:textColor">@drawable/text_color_blue_selector</item>
     </style>
+    <style name="Theme.BackgroundTranslucent" parent="Theme.AppCompat.NoActionBar">
+        <item name="android:windowBackground">@mipmap/mrkj</item>
+    </style>
 
 </resources>

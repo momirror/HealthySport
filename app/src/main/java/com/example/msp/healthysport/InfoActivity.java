@@ -56,6 +56,7 @@ public class InfoActivity extends BaseActivity implements View.OnClickListener {
 
     private String mImagePath = Environment.getExternalStorageDirectory()+"/meta/";
     private String avatarPath;
+    private Button btnOk;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,6 +74,7 @@ public class InfoActivity extends BaseActivity implements View.OnClickListener {
         btnEdit = findViewById(R.id.btn_edit);
         avatar = findViewById(R.id.avatar);
         changeBirthday = findViewById(R.id.btn_change_birthday);
+        btnOk = findViewById(R.id.btn_ok);
 
         if(avatarPath != null) {
             Bitmap bitmap = BitmapFactory.decodeFile(avatarPath);
@@ -107,6 +109,7 @@ public class InfoActivity extends BaseActivity implements View.OnClickListener {
     protected void setViewsListener() {
         btnEdit.setOnClickListener(this);
         changeBirthday.setOnClickListener(this);
+        btnOk.setOnClickListener(this);
     }
 
     @Override
@@ -153,17 +156,29 @@ public class InfoActivity extends BaseActivity implements View.OnClickListener {
                 DatePickerDialog datePickerDialog = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePicker datePicker, int year, int month, int day) {
+                        birthdayYear = year;
+                        birthdayMonth = month;
+                        birthdayDay = day;
+
                         String dateStr = year + "-" + ( month + 1) + "-" + day;
                         changeBirthday.setText(dateStr);
-
-                        Storage.saveIntValues("birthdayYear",year);
-                        Storage.saveIntValues("birthdayMonth",month);
-                        Storage.saveIntValues("birthdayDay",day);
 
                     }
                 },birthdayYear,birthdayMonth,birthdayDay);
                 datePickerDialog.setTitle("设置生日日期");
                 datePickerDialog.show();
+                break;
+            case R.id.btn_ok:
+
+                Storage.saveIntValues("birthdayYear",birthdayYear);
+                Storage.saveIntValues("birthdayMonth",birthdayMonth);
+                Storage.saveIntValues("birthdayDay",birthdayDay);
+
+                if(tempFIle != null && tempFIle.getPath() != null) {
+                    Storage.saveStringValues("avatarPath", tempFIle.getPath());
+                }
+
+                finish();
                 break;
         }
     }
@@ -293,7 +308,6 @@ public class InfoActivity extends BaseActivity implements View.OnClickListener {
                     Log.e("uri", Uri.fromFile(tempFIle).toString());
                     avatar.setImageBitmap(bitmap);
 
-                    Storage.saveStringValues("avatarPath",tempFIle.getPath());
 
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -311,7 +325,7 @@ public class InfoActivity extends BaseActivity implements View.OnClickListener {
 
     private void crop(Uri uri) {
         Log.d("URI",uri.getPath());
-        
+
         //裁剪图片
         Intent intent = new Intent("com.android.camera.action.CROP");
         intent.setDataAndType(uri,"image/*");
