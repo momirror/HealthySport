@@ -21,10 +21,14 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import com.example.msp.healthysport.base.BaseActivity;
+import com.example.msp.healthysport.utils.Constant;
 import com.example.msp.healthysport.utils.GetPictureFromLocation;
 import com.example.msp.healthysport.utils.Storage;
 
@@ -39,7 +43,8 @@ import static android.os.Environment.getExternalStoragePublicDirectory;
 /**
  *
  */
-public class InfoActivity extends BaseActivity implements View.OnClickListener {
+public class InfoActivity extends BaseActivity implements View.OnClickListener, RadioGroup.OnCheckedChangeListener {
+
 
     private Button btnEdit;
     private File tempFIle;
@@ -53,6 +58,11 @@ public class InfoActivity extends BaseActivity implements View.OnClickListener {
     private static ImageView avatar;
     private static TextView changeBirthday;
     private int birthdayYear,birthdayMonth,birthdayDay;
+    private EditText editNickname,editHeight,editWeight,editStepLen;
+    private int gender;//1:男 0：女
+    private RadioGroup genderGroup;
+    private RadioButton male,female;
+
 
     private String mImagePath = Environment.getExternalStorageDirectory()+"/meta/";
     private String avatarPath;
@@ -65,6 +75,24 @@ public class InfoActivity extends BaseActivity implements View.OnClickListener {
         String dateStr = birthdayYear + "-" + ( birthdayMonth + 1) + "-" + birthdayDay;
         changeBirthday.setText(dateStr);
 
+        if(Storage.getStringValues(Constant.NICK,null) != null) {
+            editNickname.setText(Storage.getStringValues(Constant.NICK,null));
+        }
+
+        if(Storage.getStringValues(Constant.HEIGHT,null) != null) {
+            editHeight.setText(Storage.getStringValues(Constant.HEIGHT,null));
+        }
+
+        if(Storage.getStringValues(Constant.WEIGHT,null) != null) {
+            editWeight.setText(Storage.getStringValues(Constant.WEIGHT,null));
+        }
+
+        if(Storage.getStringValues(Constant.STEPLEN,null) != null) {
+            editStepLen.setText(Storage.getStringValues(Constant.STEPLEN,null));
+        }
+
+
+        genderGroup.check(gender == 0? R.id.female:R.id.male);
 
     }
 
@@ -75,6 +103,14 @@ public class InfoActivity extends BaseActivity implements View.OnClickListener {
         avatar = findViewById(R.id.avatar);
         changeBirthday = findViewById(R.id.btn_change_birthday);
         btnOk = findViewById(R.id.btn_ok);
+        editNickname = findViewById(R.id.edit_nickname);
+        genderGroup = findViewById(R.id.gender);
+        editHeight = findViewById(R.id.edit_high);
+        editStepLen = findViewById(R.id.edit_step_len);
+        editWeight = findViewById(R.id.edit_weight);
+        male = findViewById(R.id.male);
+        female = findViewById(R.id.female);
+
 
         if(avatarPath != null) {
             Bitmap bitmap = BitmapFactory.decodeFile(avatarPath);
@@ -96,11 +132,11 @@ public class InfoActivity extends BaseActivity implements View.OnClickListener {
 
     @Override
     protected void initValues() {
-        birthdayYear = Storage.getIntValue("birthdayYear",1988);
-        birthdayMonth = Storage.getIntValue("birthdayMonth",12);
-        birthdayDay = Storage.getIntValue("birthdayDay",22);
-        avatarPath = Storage.getStringValues("avatarPath",null);
-
+        birthdayYear = Storage.getIntValue(Constant.BIRTHDAYYEAR,1988);
+        birthdayMonth = Storage.getIntValue(Constant.BIRTHDAYMONTH,12);
+        birthdayDay = Storage.getIntValue(Constant.BIRTHDAYDAY,22);
+        avatarPath = Storage.getStringValues(Constant.AVATAR,null);
+        gender = Storage.getIntValue(Constant.GENDER,1);
 
 
     }
@@ -110,6 +146,8 @@ public class InfoActivity extends BaseActivity implements View.OnClickListener {
         btnEdit.setOnClickListener(this);
         changeBirthday.setOnClickListener(this);
         btnOk.setOnClickListener(this);
+        genderGroup.setOnCheckedChangeListener(this);
+
     }
 
     @Override
@@ -170,13 +208,34 @@ public class InfoActivity extends BaseActivity implements View.OnClickListener {
                 break;
             case R.id.btn_ok:
 
-                Storage.saveIntValues("birthdayYear",birthdayYear);
-                Storage.saveIntValues("birthdayMonth",birthdayMonth);
-                Storage.saveIntValues("birthdayDay",birthdayDay);
+                Storage.saveIntValues(Constant.BIRTHDAYYEAR,birthdayYear);
+                Storage.saveIntValues(Constant.BIRTHDAYMONTH,birthdayMonth);
+                Storage.saveIntValues(Constant.BIRTHDAYDAY,birthdayDay);
 
                 if(tempFIle != null && tempFIle.getPath() != null) {
-                    Storage.saveStringValues("avatarPath", tempFIle.getPath());
+                    Storage.saveStringValues(Constant.AVATAR, tempFIle.getPath());
                 }
+
+
+                if(!editNickname.getText().toString().equals("")) {
+                    Storage.saveStringValues(Constant.NICK,editNickname.getText().toString());
+                }
+
+                if(!editHeight.getText().toString().equals("")) {
+                    Storage.saveStringValues(Constant.HEIGHT,editHeight.getText().toString());
+                }
+
+                if(!editStepLen.getText().toString().equals("")) {
+                    Storage.saveStringValues(Constant.STEPLEN,editStepLen.getText().toString());
+                }
+
+                if(!editWeight.getText().toString().equals("")) {
+                    Storage.saveStringValues(Constant.WEIGHT,editWeight.getText().toString());
+                }
+
+                Storage.saveIntValues(Constant.GENDER,gender);
+
+
 
                 finish();
                 break;
@@ -351,6 +410,15 @@ public class InfoActivity extends BaseActivity implements View.OnClickListener {
         intent.putExtra("noFaceDetection",true);
         intent.putExtra("return-data",true);
         startActivityForResult(intent, PHOTO_REQUEST_CUT);
+    }
+
+    @Override
+    public void onCheckedChanged(RadioGroup radioGroup, int checkId) {
+        if(male.getId() == checkId) {
+            gender = 1;
+        } else {
+            gender = 0;
+        }
     }
 }
 

@@ -76,6 +76,7 @@
             android:text="修改性别"/>
 
         <RadioGroup
+            android:id="@+id/gender"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:gravity="right"
@@ -84,11 +85,13 @@
             android:orientation="horizontal">
 
             <RadioButton
+                android:id="@+id/male"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:checked="true"
                 android:text="男"/>
             <RadioButton
+                android:id="@+id/female"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="20dp"
