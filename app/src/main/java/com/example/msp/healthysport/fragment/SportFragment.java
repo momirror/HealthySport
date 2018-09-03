@@ -11,7 +11,7 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
-import com.example.msp.healthysport.PrepareActivity;
+import com.example.msp.healthysport.activity.PrepareActivity;
 import com.example.msp.healthysport.R;
 import com.example.msp.healthysport.base.BaseFragment;
 import com.example.msp.healthysport.entity.TodayInfo;

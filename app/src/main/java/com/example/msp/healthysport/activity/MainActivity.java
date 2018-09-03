@@ -1,4 +1,4 @@
-package com.example.msp.healthysport;
+package com.example.msp.healthysport.activity;
 
 import android.support.v4.app.FragmentTransaction;
 import android.os.Bundle;
@@ -7,6 +7,7 @@ import android.view.WindowManager;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
+import com.example.msp.healthysport.R;
 import com.example.msp.healthysport.base.BaseActivity;
 import com.example.msp.healthysport.fragment.DiscovFragment;
 import com.example.msp.healthysport.fragment.HeartFragment;

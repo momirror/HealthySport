@@ -1,9 +1,8 @@
-package com.example.msp.healthysport;
+package com.example.msp.healthysport.activity;
 
 import android.graphics.drawable.AnimationDrawable;
 import android.os.Handler;
 import android.os.Message;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -13,6 +12,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.msp.healthysport.R;
 import com.example.msp.healthysport.application.SportApplication;
 import com.example.msp.healthysport.base.BaseActivity;
 

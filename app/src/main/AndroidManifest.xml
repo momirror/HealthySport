@@ -16,9 +16,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar"
         android:usesCleartextTraffic="true">
-        <activity android:name=".MainActivity"></activity>
-        <activity android:name=".PrepareActivity" />
-        <activity android:name=".InfoActivity" />
+        <activity android:name=".activity.MainActivity" />
+        <activity android:name=".activity.PrepareActivity" />
+        <activity android:name=".activity.InfoActivity" />
 
         <provider
             android:name="android.support.v4.content.FileProvider"
@@ -31,7 +31,7 @@
         </provider>
 
         <activity
-            android:name=".LauchActivity"
+            android:name=".activity.LauchActivity"
             android:theme="@style/Theme.BackgroundTranslucent">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -39,6 +39,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".activity.FoodHeatActivity"></activity>
     </application>
 
 </manifest>

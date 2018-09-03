@@ -1,10 +1,12 @@
-package com.example.msp.healthysport;
+package com.example.msp.healthysport.activity;
 
 import android.content.Intent;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+
+import com.example.msp.healthysport.R;
 
 /***
  * 启动界面

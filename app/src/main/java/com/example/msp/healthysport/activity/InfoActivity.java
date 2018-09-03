@@ -1,4 +1,4 @@
-package com.example.msp.healthysport;
+package com.example.msp.healthysport.activity;
 
 import android.app.Activity;
 import android.app.DatePickerDialog;
@@ -27,6 +27,7 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
+import com.example.msp.healthysport.R;
 import com.example.msp.healthysport.base.BaseActivity;
 import com.example.msp.healthysport.utils.Constant;
 import com.example.msp.healthysport.utils.GetPictureFromLocation;
