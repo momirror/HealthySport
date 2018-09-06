@@ -8,4 +8,17 @@
 
     <include layout="@layout/title_bar_layout"/>
 
+    <ExpandableListView
+        android:id="@+id/food_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:groupIndicator="@null"
+        android:childDivider="@color/theme_blue_two"
+        android:dividerHeight="2dp"
+        android:background="@color/watm_background_gray"
+        >
+
+    </ExpandableListView>
+
 </LinearLayout>
