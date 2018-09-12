@@ -17,7 +17,7 @@ import java.io.InputStream;
  */
 public class BringData {
     //数据库路径
-    public static final String DATA_PATH = "/data/data/mrkj.healthylife/databases/";
+    public static final String DATA_PATH = "/data/data/com.example.msp.healthysport/databases/";
     //文件名称
     public static final String DATA_NAME = "keepfit";
     public static void getDataFromAssets(Context context) throws IOException {

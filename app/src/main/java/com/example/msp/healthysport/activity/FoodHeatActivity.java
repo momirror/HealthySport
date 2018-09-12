@@ -39,7 +39,7 @@ public class FoodHeatActivity extends BaseActivity {
 
     @Override
     protected void initViews() {
-
+        listView = findViewById(R.id.food_list);
     }
 
     @Override
@@ -119,6 +119,8 @@ public class FoodHeatActivity extends BaseActivity {
 
     @Override
     protected void setViewsFunction() {
+        FoodAdapter foodAdapter = new FoodAdapter();
+        listView.setAdapter(foodAdapter);
 
     }
 
